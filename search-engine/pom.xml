@@ -76,7 +76,7 @@
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
-			<version>1.18.1</version>
+			<version>1.23.1</version>
 		</dependency>
 
 		<!-- Bao ve /api/admin/**. Chi dung phan loc + cau hinh chuoi loc; KHONG
@@ -122,7 +122,7 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.7.4</version>
+			<version>42.7.13</version>
 		</dependency>
 
 		<!-- Bus sự kiện giữa crawler và các Modular Service (Analytics, Image
@@ -248,7 +248,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.12</version>
+				<version>0.8.15</version>
 				<configuration>
 					<excludes>
 						<!-- Runner đánh giá IR + công cụ đo, chỉ chạy tay từ CLI -->
@@ -325,7 +325,7 @@
 			<plugin>
 				<groupId>com.github.spotbugs</groupId>
 				<artifactId>spotbugs-maven-plugin</artifactId>
-				<version>4.8.6.4</version>
+				<version>4.10.3.0</version>
 				<configuration>
 					<effort>Max</effort>
 					<threshold>Medium</threshold>
@@ -352,7 +352,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<version>3.5.0</version>
+				<version>3.6.3</version>
 				<configuration>
 					<classpathScope>compile</classpathScope>
 				</configuration>
