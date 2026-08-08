@@ -36,7 +36,7 @@ RUN mvn -B -q clean package -DskipTests
 # Chi mang theo JRE va file jar: anh cuoi khong chua Maven, khong chua ma nguon,
 # khong chua kho thu vien (~600 MB tiet kiem duoc).
 # ---------------------------------------------------------------------------
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:25-jre
 
 WORKDIR /app
 
