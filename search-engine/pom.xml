@@ -27,7 +27,7 @@
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
-			<version>1.18.1</version>
+			<version>1.23.1</version>
 		</dependency>
 
 		<!-- Bao ve /api/admin/**. Chi dung phan loc + cau hinh chuoi loc; KHONG
@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.7.4</version>
+			<version>42.7.13</version>
 		</dependency>
 
 		<dependency>
@@ -126,7 +126,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<version>3.5.0</version>
+				<version>3.6.3</version>
 				<configuration>
 					<classpathScope>compile</classpathScope>
 				</configuration>
