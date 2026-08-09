@@ -433,7 +433,7 @@ diff -u search-engine/src/main/resources/db/schema.sql deploy/k8s/base/schema.sq
 
 Kết quả mong đợi trên cây mã hiện tại:
 ```
-Tests run: 521, Failures: 0, Errors: 0
+Tests run: 528, Failures: 0, Errors: 0
 All coverage checks have been met.
 BugInstance size is 0
 BUILD SUCCESS — khoảng 43 giây

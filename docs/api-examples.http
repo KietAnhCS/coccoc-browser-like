@@ -13,9 +13,11 @@
 
 ### KHOÁ QUẢN TRỊ — bắt buộc cho mọi lệnh /api/admin/**
 ###
-### Bốn lệnh cuối tệp này trả 401 nếu thiếu header X-API-Key. Lấy giá trị thật
-### trong tệp .env ở gốc repo (run-backend.bat tự sinh và ghi vào đó), rồi dán
-### vào dòng dưới. KHÔNG commit giá trị thật.
+### Mọi request tới /api/admin/** đều trả 401 nếu thiếu header X-API-Key —
+### tức toàn bộ mục QUẢN TRỊ bên dưới. (Mục CÁC CA LỖI ở cuối tệp có cả 400 và
+### 404, cùng một request CỐ Ý bỏ khoá để thấy 401.) Lấy giá trị thật trong tệp
+### .env ở gốc repo (run-backend.bat tự sinh và ghi vào đó), rồi dán vào dòng
+### dưới. KHÔNG commit giá trị thật.
 ###
 ###     PowerShell : (Get-Content .env | Select-String '^ADMIN_API_KEY=').Line.Split('=',2)[1]
 ###     bash       : grep ^ADMIN_API_KEY= .env | cut -d= -f2
