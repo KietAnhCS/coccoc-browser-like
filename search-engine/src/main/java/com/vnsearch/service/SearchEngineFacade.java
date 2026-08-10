@@ -472,16 +472,22 @@ public class SearchEngineFacade {
     }
 
     public Map<String, Object> getStats() {
-        // Chup `index` MOT lan vao bien cuc bo. Truong nay la volatile va mot
-        // lan reindex xen giua co the thay the no, nen hai lenh doc lien tiep
-        // se roi vao HAI chi muc khac nhau — bao cao ra mot cap so chua bao gio
-        // cung ton tai. Cung ky luat da ap trong search(); cho nay bi bo sot va
-        // duoc chi ra khi review.
+        // Chụp `index` MỘT lần vào biến cục bộ, rồi mới đọc. Trường này là
+        // volatile nên hai lệnh đọc liên tiếp có thể rơi vào HAI chỉ mục khác
+        // nhau khi một lần lập chỉ mục lại xen vào giữa — báo ra một cặp số
+        // chưa bao giờ cùng tồn tại.
+        //
+        // Chặn null cho đồng bộ với các accessor còn lại. Hôm nay `index` được
+        // gán trong constructor và không đường nào gán lại thành null, nên NPE
+        // chưa xảy ra được — nhưng getIndexedDocumentCount, getTermCount và
+        // getDocumentAt đều đã chặn, và một hàm đứng ngoài kỷ luật chung là
+        // chỗ hỏng khi sau này có ai thêm đường gán mới. Trả 0 nói đúng ý
+        // "chưa có gì trong chỉ mục", giống hệt các accessor kia.
         SearchIndex current = index;
 
         Map<String, Object> stats = new LinkedHashMap<>();
-        stats.put("totalDocuments", current.getTotalDocs());
-        stats.put("totalTerms", current.getTermCount());
+        stats.put("totalDocuments", current == null ? 0 : current.getTotalDocs());
+        stats.put("totalTerms", current == null ? 0 : current.getTermCount());
         stats.put("indexSizeBytes", getIndexSizeBytes());
         stats.put("cacheHitRate", getCacheHitRate());
         stats.put("bloomFilterBits", getBloomFilterBits());
