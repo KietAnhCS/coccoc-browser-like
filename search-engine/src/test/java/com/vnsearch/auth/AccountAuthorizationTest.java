@@ -233,6 +233,30 @@ class AccountAuthorizationTest {
                 .andExpect(jsonPath("$.via").value("api-key"));
     }
 
+    /**
+     * Dang xuat phai goi duoc ngay ca khi token DA HET HAN hoac khong hop le.
+     *
+     * <p>Truoc khi sua, /api/auth/logout nam trong nhom .authenticated() nen no
+     * tra 401 — dung luc nguoi dung muon don dep phien thi he thong tu choi.
+     * Javadoc cua handler noi ro no tra 204 ke ca khi token khong con hieu luc;
+     * luat phan quyen da mau thuan voi loi hua do. Loi nay do review chi ra.
+     */
+    @Test
+    void dangXuatGoiDuocKeCaKhiTokenKhongHopLe() throws Exception {
+        mockMvc.perform(post("/api/auth/logout"))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(post("/api/auth/logout").header("Authorization", "Bearer het-han"))
+                .andExpect(status().isNoContent());
+    }
+
+    /** Nguoc lai, dang xuat MOI THIET BI van phai xac thuc: no tac dong len TAI KHOAN. */
+    @Test
+    void dangXuatMoiThietBiVanCanXacThuc() throws Exception {
+        mockMvc.perform(post("/api/auth/logout-all"))
+                .andExpect(status().isUnauthorized());
+    }
+
     @Test
     void khongCoDanhTinhThiMeTraVe401() throws Exception {
         mockMvc.perform(get("/api/auth/me")).andExpect(status().isUnauthorized());

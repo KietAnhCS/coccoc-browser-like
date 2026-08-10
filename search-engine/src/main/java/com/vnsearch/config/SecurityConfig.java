@@ -154,6 +154,19 @@ public class SecurityConfig {
                         // nhat de mot nguoi chua co phien buoc vao.
                         .requestMatchers(HttpMethod.POST, "/api/auth/register",
                                 "/api/auth/login").permitAll()
+                        // DANG XUAT cung cong khai, va day la phep sua sau review:
+                        // truoc do no nam trong nhom .authenticated(), nen mot
+                        // nguoi co token DA HET HAN bam "Dang xuat" se nhan 401 —
+                        // dung luc ho muon don dep phien thi he thong tu choi.
+                        // Javadoc cua AuthController.logout noi ro no tra 204 ke
+                        // ca khi token khong con hieu luc; luat o day da mau
+                        // thuan voi loi hua do.
+                        //
+                        // Mo ra khong them rui ro nao: handler chi thu hoi dung
+                        // token duoc gui len, khong co token thi khong co gi de
+                        // thu hoi. Con /api/auth/logout-all VAN can xac thuc vi
+                        // no hanh dong tren TAI KHOAN chu khong tren mot token.
+                        .requestMatchers(HttpMethod.POST, "/api/auth/logout").permitAll()
                         // Nhung endpoint nay chi can DA DANG NHAP, khong phan
                         // biet vai tro: mot nguoi dung thuong van phai xem duoc
                         // ho la ai va van phai dang xuat duoc.

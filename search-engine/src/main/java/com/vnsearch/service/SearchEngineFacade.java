@@ -472,9 +472,16 @@ public class SearchEngineFacade {
     }
 
     public Map<String, Object> getStats() {
+        // Chup `index` MOT lan vao bien cuc bo. Truong nay la volatile va mot
+        // lan reindex xen giua co the thay the no, nen hai lenh doc lien tiep
+        // se roi vao HAI chi muc khac nhau — bao cao ra mot cap so chua bao gio
+        // cung ton tai. Cung ky luat da ap trong search(); cho nay bi bo sot va
+        // duoc chi ra khi review.
+        SearchIndex current = index;
+
         Map<String, Object> stats = new LinkedHashMap<>();
-        stats.put("totalDocuments", index.getTotalDocs());
-        stats.put("totalTerms", index.getTermCount());
+        stats.put("totalDocuments", current.getTotalDocs());
+        stats.put("totalTerms", current.getTermCount());
         stats.put("indexSizeBytes", getIndexSizeBytes());
         stats.put("cacheHitRate", getCacheHitRate());
         stats.put("bloomFilterBits", getBloomFilterBits());

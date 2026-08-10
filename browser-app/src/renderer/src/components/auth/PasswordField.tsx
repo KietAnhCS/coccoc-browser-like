@@ -64,10 +64,11 @@ function PasswordField({
         <button
           type="button"
           onClick={() => setVisible((shown) => !shown)}
-          // tabIndex -1: người dùng bàn phím đi từ ô mật khẩu thẳng tới nút gửi
-          // là luồng thường gặp; chen một nút phụ vào giữa làm chậm mọi lần
-          // đăng nhập để phục vụ một thao tác hiếm. Chuột vẫn bấm được.
-          tabIndex={-1}
+          // KHÔNG đặt tabIndex={-1}. Bản đầu có, với lý do "đỡ chen một nút phụ
+          // vào giữa ô mật khẩu và nút gửi" — đánh đổi đó SAI: nó khiến người
+          // chỉ dùng bàn phím không cách nào bật được chế độ hiện mật khẩu, tức
+          // là mất hẳn một chức năng chứ không phải chậm hơn một nhịp. Tiết
+          // kiệm một lần nhấn Tab không đáng đổi lấy điều đó.
           className="absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center
                      justify-center rounded-lg text-faint transition hover:bg-raised
                      hover:text-ink focus-visible:outline-none focus-visible:ring-2
