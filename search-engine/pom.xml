@@ -119,7 +119,7 @@
 		<dependency>
 			<groupId>net.logstash.logback</groupId>
 			<artifactId>logstash-logback-encoder</artifactId>
-			<version>8.0</version>
+			<version>9.0</version>
 		</dependency>
 
 		<!-- Driver PostgreSQL. Co y KHONG dung spring-boot-starter-jdbc/JPA:
