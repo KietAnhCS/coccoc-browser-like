@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -139,9 +141,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<Map<String, Object>> handleMethodNotSupported(
             HttpRequestMethodNotSupportedException e) {
-        String allowed = e.getSupportedHttpMethods() == null ? ""
-                : e.getSupportedHttpMethods().stream().map(Object::toString)
-                        .collect(Collectors.joining(", "));
+        // Goi getSupportedHttpMethods() MOT lan roi giu lai. Ban dau ham nay
+        // goi hai lan — kiem null o lan mot, dung ket qua o lan hai — va
+        // SpotBugs bat dung: khong co gi bao dam hai lan goi tra ve cung mot
+        // thu, nen phep kiem null o lan dau khong bao ve duoc lan sau.
+        Set<HttpMethod> supported = e.getSupportedHttpMethods();
+        String allowed = supported == null ? ""
+                : supported.stream().map(Object::toString).collect(Collectors.joining(", "));
         return errorResponse(HttpStatus.METHOD_NOT_ALLOWED,
                 "Phuong thuc " + e.getMethod() + " khong duoc ho tro cho duong dan nay."
                         + (allowed.isBlank() ? "" : " Cho phep: " + allowed + "."),
