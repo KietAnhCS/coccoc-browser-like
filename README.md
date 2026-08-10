@@ -1,4 +1,4 @@
-# VnSearch
+# Vietnamese search-engine
 
 A Vietnamese search engine built from scratch — crawler, inverted index, ranking,
 and a mini browser to query it.
