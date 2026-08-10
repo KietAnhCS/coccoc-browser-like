@@ -77,7 +77,11 @@ describe('shortUrl', () => {
 
     expect(short.length).toBeLessThanOrEqual(40)
     expect(short).toContain('…')
-    expect(short.startsWith('vnexpress.net')).toBe(true)
+    // Regex NEO ĐẦU thay cho startsWith: CodeQL cảnh báo đúng rằng
+    // `x.startsWith('mot.ten.mien')` là khuôn của một phép kiểm tra URL không
+    // đầy đủ. Ở đây nó chỉ là một phép so trong test, nhưng viết theo khuôn an
+    // toàn thì không phải dạy công cụ bỏ qua — và khuôn đó cũng chặt hơn thật.
+    expect(short).toMatch(/^vnexpress\.net\//)
     expect(short.endsWith('quan-trong')).toBe(true)
   })
 

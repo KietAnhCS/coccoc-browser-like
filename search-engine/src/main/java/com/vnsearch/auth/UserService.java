@@ -138,7 +138,7 @@ public class UserService {
         User user = new User(normalized, encoder.encode(password), role,
                 true, clock.instant(), null);
         store.save(user);
-        log.info("Da tao tai khoan '{}' voi vai tro {}", normalized, role);
+        log.info("Da tao tai khoan '{}' voi vai tro {}", forLog(normalized), role);
         return user;
     }
 
@@ -179,7 +179,7 @@ public class UserService {
         User user = found.get();
         if (!encoder.matches(password == null ? "" : password, user.passwordHash())) {
             recordFailure(normalized, now);
-            log.warn("Dang nhap that bai cho '{}'", normalized);
+            log.warn("Dang nhap that bai cho '{}'", forLog(normalized));
             throw new InvalidCredentialsException("Tên tài khoản hoặc mật khẩu không đúng.");
         }
         if (!user.enabled()) {
@@ -195,7 +195,7 @@ public class UserService {
         } catch (IOException e) {
             // Không ghi được mốc đăng nhập KHÔNG được phép chặn đăng nhập:
             // đây là thông tin phụ trợ, còn việc xác thực thì đã xong rồi.
-            log.warn("Khong ghi duoc moc dang nhap cho '{}': {}", normalized, e.toString());
+            log.warn("Khong ghi duoc moc dang nhap cho '{}': {}", forLog(normalized), e.toString());
         }
         return updated;
     }
@@ -208,7 +208,7 @@ public class UserService {
                 attempts.lockedUntil = now.plus(Duration.ofMinutes(LOCKOUT_MINUTES));
                 attempts.count = 0;
                 log.warn("Khoa tam tai khoan '{}' trong {} phut sau {} lan sai",
-                        username, LOCKOUT_MINUTES, MAX_FAILED_ATTEMPTS);
+                        forLog(username), LOCKOUT_MINUTES, MAX_FAILED_ATTEMPTS);
             }
         }
     }
@@ -263,7 +263,7 @@ public class UserService {
         failures.remove(normalized);
         User updated = user.withPasswordHash(encoder.encode(newPassword));
         store.save(updated);
-        log.info("Tai khoan '{}' da doi mat khau", normalized);
+        log.info("Tai khoan '{}' da doi mat khau", forLog(normalized));
         return updated;
     }
 
@@ -284,7 +284,7 @@ public class UserService {
                 .orElseThrow(() -> new AuthException("Không có tài khoản: " + username));
         User updated = user.withRole(role);
         store.save(updated);
-        log.info("Doi vai tro cua '{}' thanh {}", updated.username(), role);
+        log.info("Doi vai tro cua '{}' thanh {}", forLog(updated.username()), role);
         return updated;
     }
 
@@ -317,7 +317,7 @@ public class UserService {
         boolean removed = store.delete(normalized);
         if (removed) {
             failures.remove(normalized);
-            log.info("Da xoa tai khoan '{}'", normalized);
+            log.info("Da xoa tai khoan '{}'", forLog(normalized));
         }
         return removed;
     }
@@ -333,6 +333,32 @@ public class UserService {
 
     private static String normalize(String username) {
         return username == null ? "" : username.trim().toLowerCase(Locale.ROOT);
+    }
+
+    /**
+     * Lam sach mot ten tai khoan TRUOC KHI ghi vao log.
+     *
+     * <h2>Vi sao can, du da co USERNAME_PATTERN</h2>
+     *
+     * <p>Ten di vao {@link #register} bi ep qua bieu thuc chinh quy, nhung ten
+     * di vao {@link #changePassword}, {@link #changeRole} hay {@link #delete}
+     * den tu <b>tham so duong dan</b> va chi qua {@link #normalize} (cat khoang
+     * trang + ha chu thuong). Mot ten nhu {@code "a%0A2026-01-01 ERROR Da xoa
+     * toan bo tai khoan"} se tao ra mot DONG LOG GIA hoan chinh — ke tan cong
+     * viet duoc vao nhat ky cua chinh he thong dang ghi lai hanh vi cua ho.
+     *
+     * <p>Day la lo hong <i>log injection</i>, va no nguy hiem dung o cho khong
+     * ai ngo: nhat ky la thu nguoi van hanh tin tuong nhat khi dieu tra su co.
+     *
+     * <p>Cat luon do dai: mot ten dai vai nghin ky tu khong lam hong gi nhung
+     * lam trang log khong doc duoc.
+     */
+    private static String forLog(String username) {
+        if (username == null) {
+            return "(rong)";
+        }
+        String safe = username.replaceAll("[^a-zA-Z0-9._-]", "?");
+        return safe.length() <= 64 ? safe : safe.substring(0, 64) + "...";
     }
 
     private static void validateUsername(String username) {
