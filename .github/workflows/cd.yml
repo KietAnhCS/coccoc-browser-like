@@ -103,7 +103,7 @@ jobs:
       kho: ${{ steps.kho.outputs.duong-dan }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # Đường dẫn kho ảnh, ĐÃ HẠ VỀ CHỮ THƯỜNG.
       #
@@ -221,7 +221,7 @@ jobs:
       url: https://vnsearch.local
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Cài kubectl
         uses: azure/setup-kubectl@v4
