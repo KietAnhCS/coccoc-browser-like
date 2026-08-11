@@ -79,7 +79,7 @@ jobs:
         working-directory: search-engine
         run: ./mvnw -B package -DskipTests
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: jar
           path: search-engine/target/*.jar
