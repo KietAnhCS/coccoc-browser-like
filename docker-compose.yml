@@ -161,7 +161,7 @@ services:
   # phan do vao chinh Kafka. Voi mot do an thi khac biet la mot container thay
   # vi hai, va mot loai su co thay vi hai.
   kafka:
-    image: apache/kafka:3.8.1
+    image: apache/kafka:4.3.1
     container_name: vnsearch-kafka
     profiles: [kafka, monitoring]
     environment:
