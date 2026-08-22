@@ -7,7 +7,7 @@
 # khong phai cai Maven tren may that, con trong container thi Maven da co san,
 # va goi wrapper se phai tai them mot ban Maven nua vao moi lan build.
 # ---------------------------------------------------------------------------
-FROM maven:3.9-eclipse-temurin-17 AS build
+FROM maven:3-eclipse-temurin-24 AS build
 
 WORKDIR /build
 
