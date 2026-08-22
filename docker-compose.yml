@@ -305,7 +305,7 @@ services:
   # ═════════════════════════════════════════════════════════════════════════
 
   prometheus:
-    image: prom/prometheus:v2.55.1
+    image: prom/prometheus:v3.14.0
     container_name: vnsearch-prometheus
     profiles: [monitoring]
     volumes:
@@ -325,7 +325,7 @@ services:
     restart: unless-stopped
 
   grafana:
-    image: grafana/grafana:11.3.0
+    image: grafana/grafana:13.2.0
     container_name: vnsearch-grafana
     profiles: [monitoring]
     depends_on: [prometheus]
@@ -348,7 +348,7 @@ services:
     restart: unless-stopped
 
   alertmanager:
-    image: prom/alertmanager:v0.27.0
+    image: prom/alertmanager:v0.34.0
     container_name: vnsearch-alertmanager
     profiles: [monitoring]
     volumes:
@@ -368,7 +368,7 @@ services:
   # tin hieu canh bao, vua la tin hieu CO GIAN cho KEDA. Xem
   # deploy/k8s/base/crawler-worker.yaml.
   kafka-exporter:
-    image: danielqsj/kafka-exporter:v1.7.0
+    image: danielqsj/kafka-exporter:v1.9.0
     container_name: vnsearch-kafka-exporter
     profiles: [monitoring]
     depends_on:
